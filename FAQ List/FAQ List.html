@@ -1,278 +1,414 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FAQ Lists</title>
 
-<head>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FAQ Lists</title>
-  
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-image: linear-gradient(to bottom, #002142, #461437);
-    }
-
-    ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #fd1d1d;
-            background: #455c74;
-            box-shadow: inset;
-            box-shadow: -6px -15px 15px -3px rgba(0, 128, 255, 0.164);
-            height: auto;
-        }
-  
-    .title {
-      color: white;
-    }
-  
-    li {
-      float: right;
-    }
-
-    .RSUlogo {
-      width : 35px ;
-      height :35px;
-      opacity: 1;
-      float: left;
-      display: flex;
-      text-align: center;
-      margin-top: 15px;
-      margin-left: 20px;
-      text-decoration: none
-  
-    }
-  
-    .RSU {
-      float: left;
-      color: white;
-      font-style: inherit;
-      font-size: larger;
-      display: block;
-      text-align: center;
-      padding: 10px;
-      text-decoration: none; 
-    }
-  
-    li a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    }
-  
-    li a:hover {
-      color: #4d2545;
-    }
-
-    
-    h1 {
-      color: White;
-      margin-left:30px ;
-    }
-
-    h4 {
-      color: white;
-      margin-left: 30px;
-    }
-
-    .FAQ {
-      background-color: white;
-      color: black;
-      cursor: pointer;
-      padding: 18px;
-      width: 100%;
-      border: none;
-      text-align: left;
-      outline: none;
-      font-size: 15px;
-      transition: 0.4s;
-      border-radius: 13px;
-    }
-
-    .container_1 {
-      background-color: gray;
-      margin-left: 40px;
-      margin-right: 750px;
-      margin-bottom: 20px;
-      border: 0.5px solid #0567AB;
-      padding: 5px;
-      border-radius: 13px;
-    }
-
-    .container_2 {
-      background-color: gray;
-      margin-left: 40px;
-      margin-right: 750px;
-      margin-bottom: 20px;
-      border: 0.5px solid #0567AB;
-      padding: 5px;
-      border-radius: 13px;
-    }
-
-    .container_3 {
-      background-color: gray;
-      margin-left: 40px;
-      margin-right: 750px;
-      margin-bottom: 20px;
-      border: 0.5px solid #0567AB;
-      padding: 5px;
-      border-radius: 13px;
-    }
-
-    .panel {
-      padding: 0 18px;
-      display: none;
-      background-color: #576378;
-      overflow: hidden;
-      border-radius: 13px;
-    }
-
-    .footer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 3px;
-      background-image: linear-gradient(to bottom,#61204d, #581945);
-  }
-   
-  .foterImg {
-      display: flex;
-      align-items: center;
-      gap: 50px;
-  }
-  
-  .footerword{
-      color: white;
-  }
-
-  .highlight{
-    color: green;
-  }
-  .active {
-            color: #4d2545;
-        }
-        .FAQ:after {
-  content: "\2B9F";
-  color: #777;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
-.act:after {
-  content: "\2B9D";
-}
-   
-  </style>
-</head>
-
-<body>
-
-  <ul>
-    <li><a  href="../Feedback/Feedback.html">Feedback</a></li>
-    <li><a href="../Ask a question/ask questions.html">Ask A Question</a></li>
-    <li><a class="active" href="FAQ List.html">FAQ List</a></li>
-    <li><a  href="../Home/home.html">Home</a></li>
-    
-    
-    
-    <li class="RSUlogo"><img src="./image/rsu logo.png" alt="Logo" ></li>
-    <li class="RSU"><b><a href="../home/home.html">RIC Gaming Club</a></b></li>
-  </ul>
-
-  <h1>How can we assist you?</h1> 
-  <h4>Everything you want to know about our gaming club. Can't find an answer? <a class=highlight href="../Ask a question/ask questions.html">Chat to our team. </a> </h4>
-  <hr> <br> <br>
-
-  <div class="container_1">
-    <button class="FAQ">What is the objective of the gaming club?</button> 
-    <div class="panel">
-      <p>The Objective of the gaming club is to provide a place to share your gaming hobbies comforably with each other.
-      and also we aim to compete in esports tournaments if possible.</p> 
-    </div>
-  </div> <br>
-
-  <div class="container_2">
-    <button class="FAQ">Who are the members?</button>
-    <div class="panel">
-      <p>Our Members are Thukha Minthwin, Htin Lynn Kyaw, Hein Thuya Win, TunBhone PyaeMoe, Phyo Thwe Thwe Kyaw, Thant Wai
-      Yan Linn And Enes Talha Ciftci.</p>
-    </div>
-  </div> <br>
-
-  <div class="container_3">
-    <button class="FAQ">What are the requirements to join the club?</button>
-    <div class="panel">
-      <p>There is pretty much no requirements needed to join our club. If you are interested in playing games and wants to
-      share your interests with us then you are welcome to join.</p>
-    </div>
-  </div>
-
-  <script>
-    var acc = document.getElementsByClassName("FAQ");
-    var i;
-
-    for (i = 0; i < acc.length; i++) {
-      acc[i].addEventListener("click", function () {
-        this.classList.toggle("act");
-        var panel = this.nextElementSibling;
-        if (panel.style.display === "block") {
-          panel.style.display = "none";
-        } else {
-          panel.style.display = "block";
-        }
-      });
-    }
-  </script>
-
-</body>
-<br><br><br><br>
-
-<div class="footer">
-  <br>
-  <br>
-  <div class="foterImg">
-      <div>
-          <a href="https://www.facebook.com/profile.php?id=100014915112605&mibextid=LQQJ4d">
-              <img src="./image/facebook.png" alt="facebook">
-          </a>
-      </div>
-      <div>
-          <a href="https://line.me/ti/p/aq6ANcv3au">
-              <img src="./image/line.png" alt="line">
-          </a>
-      </div>
-      <div>
-          <a href="mailto:np.thukhaminthwin@gmail.com" alt="Gmail">
-              <img src="./image/gmail.png" alt="line">
-          </a>
-      </div>
-  </div>
-  <br>
-  <br>
-  <div class="footerword"><B>@Copyright. All rights reserved.</B></div>
-  <br>
-</div>
-<script>
-  var acc = document.getElementsByClassName("accordion");
-  var i;
-  
-  for (i = 0; i < acc.length; i++) {
-    acc[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var panel = this.nextElementSibling;
-      if (panel.style.display === "block") {
-        panel.style.display = "none";
-      } else {
-        panel.style.display = "block";
+    <style>
+      /* NEW: sticky footer layout */
+      html,
+      body {
+        height: 100%;
       }
-    });
-  }
-  </script>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .footer {
+        margin-top: auto;
+        width: 100%;
+      }
 
+      /* Prevent padding from causing overflow and clamp images */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      html,
+      body {
+        overflow-x: hidden;
+      } /* safety net */
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: linear-gradient(to bottom, #002142, #461437);
+      }
+
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #455c74;
+        box-shadow: -6px -15px 15px -3px rgba(0, 128, 255, 0.164);
+        height: auto;
+      }
+
+      .title {
+        color: white;
+      }
+
+      li {
+        float: right;
+      }
+
+      .RSUlogo {
+        width: 35px;
+        height: 35px;
+        opacity: 1;
+        float: left;
+        display: flex;
+        text-align: center;
+        margin-top: 15px;
+        margin-left: 20px;
+        text-decoration: none;
+      }
+
+      .RSU {
+        float: left;
+        color: white;
+        font-style: inherit;
+        font-size: larger;
+        display: block;
+        text-align: center;
+        padding: 10px;
+        text-decoration: none;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        /* underline reveal */
+        position: relative;
+      }
+      /* Nav link underline animation */
+      li a::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 6px;
+        width: 0;
+        height: 2px;
+        background: currentColor;
+        transition: width 200ms ease, left 200ms ease;
+      }
+      li a:hover::after,
+      li a.active::after {
+        width: 60%;
+        left: 20%;
+      }
+
+      li a:hover {
+        color: #4d2545;
+      }
+
+      h1 {
+        color: White;
+        margin-left: 30px;
+      }
+
+      h4 {
+        color: white;
+        margin-left: 30px;
+      }
+
+      /* Cards */
+      .container_1,
+      .container_2,
+      .container_3 {
+        background-color: gray;
+        /* margin-left: 40px;
+        margin-right: 750px; */ /* remove overflowing margins */
+        margin: 0 auto 20px; /* center the card */
+        width: min(
+          900px,
+          calc(100% - 40px)
+        ); /* responsive width with 20px side gutters */
+        border: 0.5px solid #0567ab;
+        padding: 5px;
+        border-radius: 13px;
+        transition: transform 200ms ease, box-shadow 250ms ease;
+      }
+      .container_1:hover,
+      .container_2:hover,
+      .container_3:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+      }
+
+      .FAQ {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+        transition: transform 180ms ease, box-shadow 200ms ease,
+          background-color 200ms ease;
+        border-radius: 13px;
+      }
+      .FAQ:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+
+      /* Smooth accordion panel animation */
+      .panel {
+        padding: 0 18px; /* will expand when open */
+        max-height: 0; /* start closed */
+        overflow: hidden;
+        background-color: #576378;
+        border-radius: 13px;
+        transition: max-height 300ms ease, padding 200ms ease;
+      }
+      .panel.open {
+        padding: 12px 18px; /* add padding when open */
+      }
+
+      .footer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3px;
+        background-image: linear-gradient(to bottom, #61204d, #581945);
+        /* make width include padding to avoid 100%+padding overflow */
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .foterImg {
+        display: flex;
+        align-items: center;
+        gap: 50px;
+      }
+      /* Icon hover micro-interaction */
+      .foterImg img {
+        transition: transform 180ms ease, filter 180ms ease;
+      }
+      .foterImg img:hover {
+        transform: translateY(-2px) scale(1.03);
+        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+      }
+
+      .footerword {
+        color: white;
+      }
+
+      .highlight {
+        color: green;
+      }
+      .active {
+        color: #4d2545;
+      }
+
+      /* Scroll-reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+        transition: opacity 500ms ease,
+          transform 600ms cubic-bezier(0.2, 0.65, 0.2, 1);
+        will-change: opacity, transform;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          transition: none !important;
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .FAQ,
+        .container_1,
+        .container_2,
+        .container_3,
+        .foterImg img {
+          transition: none !important;
+        }
+      }
+
+      /* Keep your arrow styles */
+      .FAQ:after {
+        content: "\2B9F";
+        color: #777;
+        font-weight: bold;
+        float: right;
+        margin-left: 5px;
+        transition: transform 200ms ease;
+      }
+      .act:after {
+        content: "\2B9D";
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul>
+      <li><a href="../Feedback/Feedback.html">Feedback</a></li>
+      <li><a href="../Ask a question/ask questions.html">Ask A Question</a></li>
+      <li><a class="active" href="FAQ List.html">FAQ List</a></li>
+      <li><a href="../Home/home.html">Home</a></li>
+
+      <li class="RSUlogo"><img src="./image/rsu logo.png" alt="Logo" /></li>
+      <li class="RSU">
+        <b><a href="../home/home.html">RIC Gaming Club</a></b>
+      </li>
+    </ul>
+
+    <h1 class="reveal">How can we assist you?</h1>
+    <h4 class="reveal">
+      Everything you want to know about our gaming club. Can't find an answer?
+      <a class="highlight" href="../Ask a question/ask questions.html"
+        >Chat to our team.
+      </a>
+    </h4>
+    <hr />
+    <br />
+    <br />
+
+    <div class="container_1 reveal">
+      <button class="FAQ" aria-expanded="false">
+        What is the objective of the gaming club?
+      </button>
+      <div class="panel" role="region" aria-hidden="true">
+        <p>
+          The Objective of the gaming club is to provide a place to share your
+          gaming hobbies comforably with each other. and also we aim to compete
+          in esports tournaments if possible.
+        </p>
+      </div>
+    </div>
+    <br />
+
+    <div class="container_2 reveal">
+      <button class="FAQ" aria-expanded="false">Who are the members?</button>
+      <div class="panel" role="region" aria-hidden="true">
+        <p>
+          Our Members are Thukha Minthwin, Htin Lynn Kyaw, Hein Thuya Win,
+          TunBhone PyaeMoe, Phyo Thwe Thwe Kyaw, Thant Wai Yan Linn And Enes
+          Talha Ciftci.
+        </p>
+      </div>
+    </div>
+    <br />
+
+    <div class="container_3 reveal">
+      <button class="FAQ" aria-expanded="false">
+        What are the requirements to join the club?
+      </button>
+      <div class="panel" role="region" aria-hidden="true">
+        <p>
+          There is pretty much no requirements needed to join our club. If you
+          are interested in playing games and wants to share your interests with
+          us then you are welcome to join.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // Replace the old click handler with smooth height animation
+      const faqs = document.getElementsByClassName("FAQ");
+      for (let i = 0; i < faqs.length; i++) {
+        faqs[i].addEventListener("click", function () {
+          this.classList.toggle("act");
+          const panel = this.nextElementSibling;
+
+          const isOpen = panel.classList.contains("open");
+          this.setAttribute("aria-expanded", String(!isOpen));
+
+          if (isOpen) {
+            // close
+            panel.style.maxHeight = panel.scrollHeight + "px"; // set current height
+            // force reflow then animate to 0
+            requestAnimationFrame(() => {
+              panel.classList.remove("open");
+              panel.style.maxHeight = "0px";
+              panel.setAttribute("aria-hidden", "true");
+            });
+          } else {
+            // open
+            panel.classList.add("open");
+            panel.setAttribute("aria-hidden", "false");
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      }
+
+      // Recompute height on resize for open panels
+      window.addEventListener("resize", () => {
+        document.querySelectorAll(".panel.open").forEach((p) => {
+          p.style.maxHeight = p.scrollHeight + "px";
+        });
+      });
+
+      // Scroll-reveal with reduced-motion support
+      (() => {
+        const prefersReduced = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        const targets = document.querySelectorAll(".reveal");
+        if (prefersReduced) {
+          targets.forEach((el) => el.classList.add("visible"));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("visible");
+                obs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.15 }
+        );
+        targets.forEach((el) => io.observe(el));
+      })();
+    </script>
+
+    <!-- MOVED: footer inside body and removed extra <br> outside body -->
+    <div class="footer">
+      <br />
+      <br />
+      <div class="foterImg">
+        <div>
+          <a
+            href="https://www.facebook.com/profile.php?id=100014915112605&mibextid=LQQJ4d"
+          >
+            <img src="./image/facebook.png" alt="facebook" />
+          </a>
+        </div>
+        <div>
+          <a href="https://line.me/ti/p/aq6ANcv3au">
+            <img src="./image/line.png" alt="line" />
+          </a>
+        </div>
+        <div>
+          <a href="mailto:np.thukhaminthwin@gmail.com" alt="Gmail">
+            <img src="./image/gmail.png" alt="line" />
+          </a>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div class="footerword"><b>@Copyright. All rights reserved.</b></div>
+      <br />
+    </div>
+  </body>
 </html>

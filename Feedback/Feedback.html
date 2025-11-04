@@ -1,264 +1,538 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GPT Q&A</title>
 
     <style>
-        
-    @media screen and (min-width: 600px) {
-        div.example {
-                font-size: 80px;
-            }
-        }
+      /* Layout + safety nets */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow-x: hidden;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-image: linear-gradient(to bottom, #002142, #461437);
+        min-height: 100vh; /* sticky footer layout */
+        display: flex;
+        flex-direction: column;
+      }
 
-    @media screen and (max-width: 600px) {
-        div.example {
-                 font-size: 30px;
-            }
-        }
+      /* Nav */
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #455c74;
+        box-shadow: -6px -15px 15px -3px rgba(0, 128, 255, 0.164);
+        height: auto;
+      }
+      li {
+        float: right;
+      }
+      li a {
+        display: block;
+        color: #fff;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        position: relative; /* underline animation */
+        transition: color 160ms ease;
+      }
+      li a::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 6px;
+        width: 0;
+        height: 2px;
+        background: currentColor;
+        transition: width 180ms ease, left 180ms ease;
+      }
+      li a:hover::after,
+      li a.active::after {
+        width: 60%;
+        left: 20%;
+      }
+      li a:hover {
+        color: #4d2545;
+      }
 
-        body {
-            margin: 0;
-            padding: 0px;
-            background-image: linear-gradient(to bottom, #002142, #461437);
-        }
-         
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #fd1d1d;
-            background: #455c74;
-            box-shadow: inset;
-            box-shadow: -6px -15px 15px -3px rgba(0, 128, 255, 0.164);
-            height: auto;
-        }
+      .RSUlogo {
+        width: 35px;
+        height: 35px;
+        opacity: 1;
+        float: left;
+        display: flex;
+        text-align: center;
+        margin-top: 15px;
+        margin-left: 20px;
+        text-decoration: none;
+      }
+      .RSU {
+        float: left;
+        color: white;
+        font-size: larger;
+        display: block;
+        text-align: center;
+        padding: 10px;
+        text-decoration: none;
+      }
+      .active {
+        color: #4d2545;
+      }
 
-        .RSUlogo {
-            width : 35px ;
-            height :35px;
-            opacity: 1;
-            float: left;
-            display: flex;
-            text-align: center;
-            margin-top: 15px;
-            margin-left: 20px;
-            text-decoration: none;
-        }
+      /* Centered content blocks */
+      .page-intro {
+        color: #fff;
+        text-align: center;
+        margin: 16px auto 0;
+        padding: 0 20px;
+        width: min(900px, 100%);
+      }
 
-        .RSU {
-            float: left;
-            color: white;
-            font-style: inherit;
-            font-size: larger;
-            display: block;
-            text-align: center;
-            padding: 10px;
-            text-decoration: none;
-        }
+      .container {
+        width: min(680px, calc(100% - 40px));
+        min-height: 260px;
+        border-radius: 20px;
+        background-color: #455c74; /* match site/nav theme */
+        margin: 24px auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        gap: 0;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        transition: transform 200ms ease, box-shadow 240ms ease;
+      }
 
-        li {
-            float: right;
-        }
+      /* Container: subtle glow on hover */
+      .container:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3),
+          0 0 0 2px rgba(255, 255, 255, 0.06) inset;
+      }
 
-        li a {
-            display: block;
-            color: rgb(255, 255, 255);
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
+      /* Icons: keep original colors (no grayscale) */
+      .logo a img {
+        width: 64px;
+        height: 64px;
+        display: block;
+        filter: none !important;
+        -webkit-filter: none !important;
+        opacity: 1;
+        mix-blend-mode: normal;
+      }
 
-        li a:hover {
-            color: #4d2545;
-        }
+      /* Optional hover depth without desaturating */
+      .logo a:hover {
+        transform: translateY(-2px) scale(1.05);
+        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+      }
 
-        #emo:hover{
-            background-color: #dcd800;
-        }
+      /* Optional: remove now-unused .links block if present */
+      .links {
+        display: none;
+      }
 
+      /* Emoji rater */
+      .contain {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 10px 6px;
+        margin: 16px auto;
+        width: min(680px, calc(100% - 40px));
+      }
+      .item {
+        width: 90px;
+        height: 90px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+      }
+      .radio {
+        display: none;
+      }
+      .radio ~ span {
+        font-size: 3rem;
+        /* show emojis in color */
+        filter: none !important;
+        -webkit-filter: none !important;
+        cursor: pointer;
+        transition: transform 180ms ease, text-shadow 180ms ease;
+      }
+      .radio ~ span:hover {
+        transform: translateY(-2px) scale(1.08);
+      }
+      .radio:checked ~ span {
+        /* keep color when selected too */
+        filter: none !important;
+        -webkit-filter: none !important;
+        transform: scale(1.15);
+        text-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        animation: pop 200ms ease-out;
+      }
+
+      /* Survey link – centered button style */
+      #survey {
+        display: inline-block;
+        margin: 8px auto 20px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        background: #cccccc;
+        color: #0b2b66;
+        text-decoration: none;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        transition: transform 180ms ease, box-shadow 200ms ease,
+          background-color 180ms ease;
+      }
+      #survey:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.28);
+        background: #d8d8d8;
+      }
+      #survey::after {
+        content: "→";
+        display: inline-block;
+        margin-left: 8px;
+        transform: translateX(0);
+        transition: transform 160ms ease;
+      }
+      #survey:hover::after {
+        transform: translateX(3px);
+      }
+      #survey:focus-visible {
+        outline: 3px solid #d8d8d8;
+        outline-offset: 3px;
+        border-radius: 12px;
+      }
+
+      /* Sticky footer */
+      footer {
+        margin-top: auto; /* push to bottom */
+        text-align: center;
+        background-image: linear-gradient(to bottom, #61204d, #581945);
+        color: rgb(196, 196, 196);
+        padding: 12px 16px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      /* Scroll-reveal */
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+        transition: opacity 480ms ease,
+          transform 560ms cubic-bezier(0.2, 0.65, 0.2, 1);
+        will-change: opacity, transform;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* Responsive tweaks */
+      @media (max-width: 600px) {
         .container {
-            width: 480px;
-            height: 365px;
-            border-radius: 20px;
-            background-color: #cccccc;
-            margin-left: 510px;
-            margin-top: 35px;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
+          gap: 20px;
         }
-
-        .logo {
-            gap: 55px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: -10px;
-            margin-left: -50px;
-        }
-
         .links {
-            display: flex;
-            flex-direction: column;
-            gap: 85px;
-            margin-top: -5px;
-            margin-left: 55px;
+          gap: 20px;
         }
+      }
 
-        #survey {
-            margin-left: 630px;
-            border-radius: 20px;
-            background-color: #cccccc;
-            padding: 20px;
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          transition: none !important;
+          opacity: 1 !important;
+          transform: none !important;
         }
+        .container,
+        .logo img,
+        .links a,
+        #survey,
+        .radio ~ span {
+          transition: none !important;
+        }
+        .radio:checked ~ span {
+          transform: none !important;
+        }
+      }
 
-        #emojirate {
-            background: #cccccc;
-            border-radius: 20px;
-            width: 480px;
-            margin-left:510px;
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            height: 120px;
-        }
-        #emo:focus{
-            color: yellow;
-        }
+      /* Icons in rows using grid */
+      .logo {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+        justify-items: center;
+        align-items: center;
+        gap: 28px 32px; /* row gap | column gap */
+        width: 100%;
+      }
 
-        #emojis {
-            display: flex;
-            gap: 20px;
-        }
-    
-        #foot {
-            text-align: center;
-            background-image: linear-gradient(to bottom, #61204d, #581945);
-        }
-        .contain {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
+      .logo a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 84px;
+        height: 84px;
+        border-radius: 14px;
+        transition: transform 180ms ease, filter 180ms ease,
+          box-shadow 180ms ease;
+        position: relative;
+        cursor: pointer;
+      }
 
-.item {
-  width: 90px;
-  height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
-}
-.radio {
-  display: none;
-}
-.radio ~ span {
-  font-size: 3rem;
-  filter: grayscale(100);
-  cursor: pointer;
-  transition: 0.3s;
-}
+      .logo a img {
+        width: 72px;
+        height: 72px;
+        display: block;
+        filter: none !important;
+        -webkit-filter: none !important;
+        opacity: 1;
+        mix-blend-mode: normal;
+      }
 
-.radio:checked ~ span {
-  filter: grayscale(0);
-  font-size: 4rem;
-}
-.active {
-            color: #4d2545;
+      /* Brand colors */
+      .brand-facebook {
+        color: #1877f2;
+      }
+      .brand-line {
+        color: #06c755;
+      }
+      .brand-gmail {
+        color: #ea4335;
+      }
+
+      /* Paint monochrome PNGs with brand color using mask */
+      .logo a .icon {
+        width: 72px;
+        height: 72px;
+        display: block;
+        background-color: currentColor; /* use brand color */
+      }
+
+      /* Use your existing PNGs as masks */
+      .brand-facebook .icon {
+        -webkit-mask: url("./image/fb.png") no-repeat center / contain;
+        mask: url("./image/fb.png") no-repeat center / contain;
+      }
+      .brand-line .icon {
+        -webkit-mask: url("./image/line.png") no-repeat center / contain;
+        mask: url("./image/line.png") no-repeat center / contain;
+      }
+      .brand-gmail .icon {
+        -webkit-mask: url("./image/gmail.png") no-repeat center / contain;
+        mask: url("./image/gmail.png") no-repeat center / contain;
+      }
+
+      /* Hover depth (no desaturation) */
+      .logo a:hover {
+        transform: translateY(-2px) scale(1.05);
+        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+      }
+
+      /* Optional: force 2 columns on very small screens */
+      @media (max-width: 420px) {
+        .logo {
+          grid-template-columns: repeat(2, minmax(84px, 1fr));
         }
-       
-       </style>
-</head>
+      }
 
-<body>
+      /* Tooltip from aria-label */
+      .logo a::after {
+        content: attr(aria-label);
+        position: absolute;
+        left: 50%;
+        bottom: -34px;
+        transform: translate(-50%, 6px);
+        background: rgba(0, 0, 0, 0.65);
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        line-height: 1;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 160ms ease, transform 160ms ease;
+      }
+      .logo a:hover::after,
+      .logo a:focus-visible::after {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      /* Emoji rater: pop animation on select */
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.25);
+        }
+        100% {
+          transform: scale(1.15);
+        }
+      }
+      .radio ~ span {
+        transition: transform 180ms ease, text-shadow 180ms ease;
+      }
+      .radio ~ span:hover {
+        transform: translateY(-2px) scale(1.08);
+      }
+      .radio:checked ~ span {
+        transform: scale(1.15);
+        text-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        animation: pop 200ms ease-out;
+      }
+
+      /* Respect reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .logo a::after {
+          transition: none !important;
+        }
+        #survey::after {
+          transition: none !important;
+        }
+        .radio ~ span {
+          transition: none !important;
+        }
+        .radio:checked ~ span {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
     <ul>
-        <li><a class="active" href="#">Feedback</a></li>
-        <li><a href="../Ask a question/ask questions.html">Ask A Question</a></li>     
-        <li><a href="../FAQ List/FAQ List.html">FAQ List</a></li>
-        <li><a href="../Home/home.html">Home</a></li>
-        
-        
-        <li class="RSUlogo"><img src="./image/RSU.png" alt="Logo" ></li>
-        <li class="RSU"><b><a href="./home.html">RIC Gaming Club</a></b></li>
+      <li><a class="active" href="#">Feedback</a></li>
+      <li><a href="../Ask a question/ask questions.html">Ask A Question</a></li>
+      <li><a href="../FAQ List/FAQ List.html">FAQ List</a></li>
+      <li><a href="../Home/home.html">Home</a></li>
+      <li class="RSUlogo"><img src="./image/RSU.png" alt="Logo" /></li>
+      <li class="RSU">
+        <b><a href="./home.html">RIC Gaming Club</a></b>
+      </li>
     </ul>
 
-    <br>
+    <div class="page-intro reveal">
+      <h3>
+        If you need further information, or want to join the club, contact our
+        club president below!
+      </h3>
+    </div>
 
-    <center>
-        <h3 style="color: white;">If you need further more information, or want to join the club, contact our club president below!</h3>
-    </center>
+    <div class="container reveal">
+      <div class="logo">
+        <a
+          class="brand-facebook"
+          href="https://www.facebook.com/profile.php?id=100014915112605&mibextid=LQQJ4d"
+          aria-label="Facebook - Thukha Minthwin"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="icon" aria-hidden="true"></span>
+        </a>
 
-    <div class="container">
-        <div class="logo">
-            <img src="./image/fb.png" class="FB" height="50px" width="50px">
-            <img src="./image/line.png" class="Line" height="55px" width="55px">
-            <img src="./image/gmail.png" class="Gmail" height="52px" width="52px">
-        </div>
+        <a
+          class="brand-line"
+          href="https://line.me/ti/p/aq6ANcv3au"
+          aria-label="Line - Thukha Minthwin"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="icon" aria-hidden="true"></span>
+        </a>
 
-        <div class="links">
-            <a href="https://www.facebook.com/profile.php?id=100014915112605&mibextid=LQQJ4d" style="color: darkblue;"> Thukha Minthwin </a>
-            <a href="https://line.me/ti/p/aq6ANcv3au" style="color: darkblue;"> Thukha Minthwin</a>
-            <a href="np.thukhaminthwin@gmail.com" style="color: darkblue;" > np.thukhaminthwin@gmail.com</a>
+        <a
+          class="brand-gmail"
+          href="mailto:np.thukhaminthwin@gmail.com"
+          aria-label="Email - np.thukhaminthwin@gmail.com"
+        >
+          <span class="icon" aria-hidden="true"></span>
+        </a>
+      </div>
+    </div>
 
-            
-        </div>
-    </div><br> 
-
-    
-
-    
-    <div class="contain">
-        <div class="item">
-          <label for="0">
-          <input class="radio" type="radio" name="feedback" id="0" value="0">
-          <span>🤬</span></label>
-        </div>
-    
-        <div class="item">
-          <label for="1">
-          <input class="radio" type="radio" name="feedback" id="1" value="1">
+    <div class="contain reveal">
+      <div class="item">
+        <label for="0">
+          <input class="radio" type="radio" name="feedback" id="0" value="0" />
+          <span>🤬</span>
+        </label>
+      </div>
+      <div class="item">
+        <label for="1">
+          <input class="radio" type="radio" name="feedback" id="1" value="1" />
           <span>🙁</span>
         </label>
-        </div>
-    
-        <div class="item">
-          <label for="2">
-          <input class="radio" type="radio" name="feedback" id="2" value="2">
+      </div>
+      <div class="item">
+        <label for="2">
+          <input class="radio" type="radio" name="feedback" id="2" value="2" />
           <span>😶</span>
         </label>
-        </div>
-    
-        <div class="item">
-          <label for="3">
-          <input class="radio" type="radio" name="feedback" id="3" value="3">
+      </div>
+      <div class="item">
+        <label for="3">
+          <input class="radio" type="radio" name="feedback" id="3" value="3" />
           <span>😁</span>
         </label>
-        </div>
-    
-        <div class="item">
-          <label for="4">
-          <input class="radio" type="radio" name="feedback" id="4" value="4">
+      </div>
+      <div class="item">
+        <label for="4">
+          <input class="radio" type="radio" name="feedback" id="4" value="4" />
           <span>😍</span>
         </label>
-        </div>
-    
       </div>
-    </div><br><br>
+    </div>
 
-    <a href="https://forms.gle/iuZ9A6DcJf68WNaU6" id="survey">
-       Click here for survey about us </a>
+    <a href="https://forms.gle/iuZ9A6DcJf68WNaU6" id="survey" class="reveal"
+      >Click here for survey about us</a
+    >
 
-</body><br><br><br><br>
+    <footer>
+      <h3>@Copyright. All rights reserved</h3>
+    </footer>
 
-<footer id="foot"> <br> <h3 style="color: rgb(196, 196, 196);">@Copyright.All rights reserved</h3> <br> </footer>
-
+    <script>
+      // Scroll-reveal
+      (() => {
+        const prefersReduced = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+        const targets = document.querySelectorAll(".reveal");
+        if (prefersReduced) {
+          targets.forEach((el) => el.classList.add("visible"));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("visible");
+                obs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        targets.forEach((el) => io.observe(el));
+      })();
+    </script>
+  </body>
 </html>
